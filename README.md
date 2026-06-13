@@ -95,6 +95,14 @@ Execute your training script from the terminal:
 python train.py
 ```
 
+## Training the Model
+
+To run the complete 2-phase training pipeline (unsupervised pretraining on real scraped images followed by supervised extraction training on synthetic data), execute the following script:
+
+```bash
+python train_real_data.py
+```
+
 ## Running the Tests
 
 To verify that the neural network architecture shapes match up correctly without needing a real dataset, you can run the built-in synthetic test:
