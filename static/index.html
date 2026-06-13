@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card Extractor</title>
+    <!-- Basic SVG Favicon to prevent 404 errors -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📇</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for modern iconography -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="ph ph-scan"></i> CaptureCard</h1>
+            <p>Upload or snap a picture of a business card to instantly extract its details.</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <!-- Toggle between Upload and Camera -->
+                <div class="tab-container">
+                    <button class="tab active" id="tab-upload">Upload Image</button>
+                    <button class="tab" id="tab-camera">Use Camera</button>
+                </div>
+
+                <div class="panel active" id="panel-upload">
+                    <div class="drop-zone" id="drop-zone">
+                        <i class="ph ph-upload-simple drop-icon"></i>
+                        <p>Drag & Drop an image here or <span class="browse">Browse</span></p>
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <div class="panel" id="panel-camera">
+                    <div class="camera-container">
+                        <video id="webcam" autoplay playsinline></video>
+                        <canvas id="canvas" hidden></canvas>
+                        <button id="capture-btn" class="primary-btn"><i class="ph ph-camera"></i> Capture Image</button>
+                    </div>
+                </div>
+                
+                <div class="preview-container" id="preview-container" hidden>
+                    <img id="image-preview" src="" alt="Preview">
+                    <button id="extract-btn" class="primary-btn pulse"><i class="ph ph-magic-wand"></i> Extract Details</button>
+                    <button id="reset-btn" class="secondary-btn"><i class="ph ph-arrows-counter-clockwise"></i> Start Over</button>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h2>Extracted Data</h2>
+                <div class="glass-card" id="result-box">
+                    <div id="loading" hidden>
+                        <div class="spinner"></div>
+                        <p>Analyzing image... This may take a while depending on your hardware.</p>
+                    </div>
+                    <pre id="json-output">Ready to extract.</pre>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

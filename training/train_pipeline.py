@@ -67,5 +67,47 @@ class FoundationModelPipeline:
             
         return total_loss / len(dataloader)
 
+    @torch.no_grad()
+    def inference(self, image_tensor, max_len=200):
+        self.vision_encoder.eval()
+        self.fusion_engine.eval()
+        self.decoder.eval()
+        
+        image_tensor = image_tensor.to(self.device)
+        B = image_tensor.size(0)
+        
+        # 1. Vision Features
+        vision_out = self.vision_encoder(image_tensor)
+        visual_embeds = vision_out["sequence_features"]
+        if visual_embeds is None:
+            return "Failed to extract visual features."
+            
+        # 2. Multimodal Fusion
+        semantic_embeds = torch.zeros(B, 1, 768).to(self.device)
+        memory = self.fusion_engine(semantic_embeds, visual_embeds)
+        
+        # 3. Autoregressive Decoding
+        # Start with <BOS>
+        bos_token = self.tokenizer.vocab.get(self.tokenizer.bos_token, 2)
+        eos_token = self.tokenizer.vocab.get(self.tokenizer.eos_token, 3)
+        
+        generated_tokens = [bos_token]
+        
+        for _ in range(max_len):
+            tgt_tensor = torch.tensor([generated_tokens], dtype=torch.long, device=self.device)
+            
+            logits = self.decoder(tgt_tensor, memory)
+            next_token_logits = logits[:, -1, :]
+            next_token = torch.argmax(next_token_logits, dim=-1).item()
+            
+            generated_tokens.append(next_token)
+            
+            if next_token == eos_token:
+                break
+                
+        decoded_text = self.tokenizer.decode(generated_tokens)
+        return decoded_text
+
+
 if __name__ == "__main__":
     print("Initialized Training Pipeline.")

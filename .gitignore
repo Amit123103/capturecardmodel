@@ -1,1 +1,4 @@
 *.zip
+__pycache__/
+*/__pycache__/
+synthetic_data/
