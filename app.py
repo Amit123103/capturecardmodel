@@ -148,7 +148,10 @@ async def extract_card(background_tasks: BackgroundTasks, file: UploadFile = Fil
         img_tensor = augmentor(image, split='val').unsqueeze(0)
         
         # --- FAST EXTRACTION PATH (EasyOCR) ---
-        img_np = np.array(image)
+        # Resize image to a maximum dimension of 1000px to drastically speed up OCR
+        ocr_image = image.copy()
+        ocr_image.thumbnail((1000, 1000))
+        img_np = np.array(ocr_image)
         ocr_results = reader.readtext(img_np, detail=0, paragraph=False)
         
         # Parse the structured fields
