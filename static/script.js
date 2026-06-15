@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('file', currentImageBlob, 'card.jpg');
 
         try {
-            const response = await fetch('/extract', {
+            const response = await fetch('https://capturecardmodel.onrender.com/extract', {
                 method: 'POST',
                 body: formData
             });
