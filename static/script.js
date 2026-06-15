@@ -145,8 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('file', currentImageBlob, 'card.jpg');
 
+        // Automatically use localhost when testing locally, and Render when deployed to Vercel
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const apiUrl = isLocal ? '/extract' : 'https://capturecardmodel.onrender.com/extract';
+
         try {
-            const response = await fetch('https://capturecardmodel.onrender.com/extract', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 body: formData
             });
