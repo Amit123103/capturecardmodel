@@ -5,3 +5,4 @@ fastapi
 uvicorn
 python-multipart
 easyocr
+opencv-python-headless
